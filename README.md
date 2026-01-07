@@ -10,6 +10,7 @@ Current Industry 4.0 architectures rely on centralized Identity Providers (IdP).
 
 ## 2. Architecture
 ![Kill Switch vs Edge Mesh](docs/architecture_diagram.png)
+
 *Figure 1: Comparison of Cloud-First Fragility vs. SentryC2 Edge Mesh*
 
 ## 3. Quick Start (Docker)
