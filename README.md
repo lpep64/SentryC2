@@ -63,7 +63,7 @@ The Docker extension in VS Code will automatically detect your containers. If yo
    - Attach shell
    - View logs
    - Stop/Start container
-```
+
 
 ## 4. Roadmap (Spring 2026)
 *   **Jan 2026:** Environment Setup & Digital Twin Alpha
@@ -74,4 +74,4 @@ The Docker extension in VS Code will automatically detect your containers. If yo
 ## License
 Copyright 2026 Luke Pepin.
 Licensed under the Apache License, Version 2.0.
-```
+
