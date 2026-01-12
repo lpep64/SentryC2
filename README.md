@@ -65,8 +65,43 @@ The Docker extension in VS Code will automatically detect your containers. If yo
    - Stop/Start container
 
 
-## 4. Roadmap (Spring 2026)
-*   **Jan 2026:** Environment Setup & Digital Twin Alpha
+## 4. Unity-ROS2 Integration Setup
+
+### Connection Configuration
+The Unity simulation connects to ROS2 running in the Docker container via TCP socket.
+
+**ROS Settings (Unity):**
+- **ROS IP Address:** `127.0.0.1`
+- **ROS Port:** `10005`
+- **Protocol:** ROS2
+- **Connect on Startup:** Unchecked (manual connection recommended)
+
+**Start ROS TCP Listener (Docker):**
+```bash
+source ros2_ws/install/setup.bash
+ros2 run ros_tcp_endpoint default_server_endpoint \
+  --ros-args -p ROS_IP:=0.0.0.0 -p ROS_TCP_PORT:=10005
+```
+
+**Verify Connection:**
+- Unity Console: `✓ ROSConnection instance obtained`
+- Docker Terminal: `[INFO] [UnityEndpoint]: Connection from 127.0.0.1`
+- Topic registered: `/tf` (transforms)
+
+### URDF Importer Fix (Linux)
+The URDF importer requires a system-wide libdl.so symlink on Linux hosts:
+
+```bash
+sudo ln -sf /lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/libdl.so
+```
+
+**Verification:** Restart Unity and test URDF import. The `DllNotFoundException: libdl.so` error should be resolved.
+
+### Debug Tools
+A diagnostic script is included at [`Assets/Scripts/ROSConnectionDebug.cs`](Sentry_Simulation/Assets/Scripts/ROSConnectionDebug.cs) to monitor connection status. Attach to any GameObject to see real-time connection logs.
+
+## 5. Roadmap (Spring 2026)
+*   **Jan 2026:** ✅ Environment Setup & Digital Twin Alpha
 *   **Feb 2026:** Hardware Interface (Raspberry Pi / Arduino BLE)
 *   **Mar 2026:** Chaos Engineering (Packet Loss & ARP Poisoning)
 *   **Apr 2026:** Final Integration & Thesis Defense

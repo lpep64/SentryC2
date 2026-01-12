@@ -1,11 +1,14 @@
 # Unity Generated Files (CRITICAL)
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+Sentry_Simulation/[Ll]ibrary/
+Sentry_Simulation/[Tt]emp/
+Sentry_Simulation/[Oo]bj/
+Sentry_Simulation/[Bb]uild/
+Sentry_Simulation/[Bb]uilds/
+Sentry_Simulation/[Ll]ogs/
+Sentry_Simulation/[Uu]ser[Ss]ettings/
+Sentry_Simulation/*.csproj
+Sentry_Simulation/*.sln
+Sentry_Simulation/*.slnx
 
 # Python/ROS Generated Files
 __pycache__/
