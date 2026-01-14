@@ -1,3 +1,6 @@
 [submodule "ros2_ws/src/ROS-TCP-Endpoint"]
 	path = ros2_ws/src/ROS-TCP-Endpoint
 	url = https://github.com/Unity-Technologies/ROS-TCP-Endpoint.git
+[submodule "ros2_ws/src/Unity-Robotics-Hub"]
+	path = ros2_ws/src/Unity-Robotics-Hub
+	url = https://github.com/Unity-Technologies/Unity-Robotics-Hub.git
