@@ -17,6 +17,9 @@ class CyclicActionServer(Node):
         self.state = 'HOME'  # HOME -> TARGET -> HOME
         self.auth_token_valid = True
         self.get_logger().info('SentryC2 Logic Node Started. Mode: CYCLIC.')
+        
+        # Kill Switch: Flip auth_token_valid after 10 seconds
+        self.kill_switch_timer = self.create_timer(10.0, self.trigger_kill_switch)
 
     def execute_cycle(self) -> None:
         if not self.auth_token_valid:
@@ -41,6 +44,12 @@ class CyclicActionServer(Node):
             self.get_logger().info('Status: Returning HOME...')
             self.publish_trajectory(POSE_TARGET, POSE_HOME)
             self.state = 'HOME'
+
+    def trigger_kill_switch(self) -> None:
+        """Kill switch callback - simulates authorization expiration."""
+        self.auth_token_valid = False
+        self.get_logger().warn('⚠️ KILL SWITCH ACTIVATED: Authorization token expired!')
+        self.kill_switch_timer.cancel()  # Only trigger once
 
     def publish_trajectory(self, start_pose, end_pose) -> None:
         steps = 100
