@@ -65,45 +65,52 @@ The Docker extension in VS Code will automatically detect your containers. If yo
    - Stop/Start container
 
 
-## 4. Unity-ROS2 Integration Setup
+## 4. Unity-ROS2 Integration
 
-### Connection Configuration
-The Unity simulation connects to ROS2 running in the Docker container via TCP socket.
+### Running the Complete System
 
-**ROS Settings (Unity):**
-- **ROS IP Address:** `127.0.0.1`
-- **ROS Port:** `10005`
-- **Protocol:** ROS2
-- **Connect on Startup:** Unchecked (manual connection recommended)
-
-**Start ROS TCP Listener (Docker):**
+**Terminal 1 (ROS-TCP Bridge):**
 ```bash
-source ros2_ws/install/setup.bash
+cd /workspace/ros2_ws
+source install/setup.bash
 ros2 run ros_tcp_endpoint default_server_endpoint \
   --ros-args -p ROS_IP:=0.0.0.0 -p ROS_TCP_PORT:=10005
 ```
 
-**Verify Connection:**
-- Unity Console: `✓ ROSConnection instance obtained`
-- Docker Terminal: `[INFO] [UnityEndpoint]: Connection from 127.0.0.1`
-- Topic registered: `/tf` (transforms)
+**Terminal 2 (Action Server):**
+```bash
+cd /workspace/ros2_ws
+source install/setup.bash
+ros2 run sentry_logic cyclic_server
+```
+
+**Unity Configuration:**
+1. **ROSConnection Settings** (GameObject with ROSConnection component):
+   - ROS IP: `127.0.0.1`
+   - ROS Port: `10005`
+   - Protocol: `ROS2`
+   - Connect on Startup: ✅ **Enabled**
+
+2. **Robot Components** (niryo_one GameObject):
+   - `PhysicsController` - Configures ArticulationBody physics (stiffness: 10000, damping: 1000, forceLimit: 1000)
+   - `JointStateSubscriber` - Subscribes to `/joint_states` and applies positions to joints
+   - ❌ Remove `Controller` component (causes Input API conflicts)
+
+3. **Press Play** - Robot cycles between HOME and TARGET poses every 2 seconds
 
 ### URDF Importer Fix (Linux)
-The URDF importer requires a system-wide libdl.so symlink on Linux hosts:
-
 ```bash
 sudo ln -sf /lib/x86_64-linux-gnu/libdl.so.2 /usr/lib/libdl.so
 ```
 
-**Verification:** Restart Unity and test URDF import. The `DllNotFoundException: libdl.so` error should be resolved.
-
-### Debug Tools
-A diagnostic script is included at [`Assets/Scripts/ROSConnectionDebug.cs`](Sentry_Simulation/Assets/Scripts/ROSConnectionDebug.cs) to monitor connection status. Attach to any GameObject to see real-time connection logs.
+### Verification
+- Docker: `[INFO] [UnityEndpoint]: RegisterSubscriber(/joint_states...)`
+- Unity: Robot moves smoothly, base rotates ~90°, arm lifts slightly
 
 ## 5. Roadmap (Spring 2026)
-*   **Jan 2026:** ✅ Environment Setup & Digital Twin Alpha
-*   **Feb 2026:** Hardware Interface (Raspberry Pi / Arduino BLE)
-*   **Mar 2026:** Chaos Engineering (Packet Loss & ARP Poisoning)
+*   **Jan 2026:** ✅ Environment Setup & Digital Twin Alpha ✅ ROS2 Action Server Integration
+*   **Feb 2026:** Hardware Interface (Raspberry Pi / Arduino BLE) & Kill Switch Implementation
+*   **Mar 2026:** Zero-Knowledge Proof Auth & Chaos Engineering (Packet Loss / ARP Poisoning)
 *   **Apr 2026:** Final Integration & Thesis Defense
 
 ## License
