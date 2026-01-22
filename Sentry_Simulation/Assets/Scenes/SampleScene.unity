@@ -4757,7 +4757,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 40
+  field of view: 30
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -4783,13 +4783,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.12059043, y: -0.37940952, z: 0.04995019, w: 0.9159757}
-  m_LocalPosition: {x: 2, y: 1, z: -2}
+  m_LocalRotation: {x: 0, y: 0.9914449, z: -0.13052616, w: 0}
+  m_LocalPosition: {x: 0, y: 0.71, z: 1.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: 15, y: 180, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13170,6 +13170,7 @@ GameObject:
   - component: {fileID: 1752030733}
   - component: {fileID: 1752030736}
   - component: {fileID: 1752030735}
+  - component: {fileID: 1752030737}
   m_Layer: 0
   m_Name: niryo_one
   m_TagString: robot
@@ -13227,13 +13228,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unity.Robotics.UrdfImporter.Control.JointStateSubscriber
   topicName: /joint_states
-  jointNames:
-  - joint_1
-  - joint_2
-  - joint_3
-  - joint_4
-  - joint_5
-  - joint_6
 --- !u!114 &1752030736
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13251,6 +13245,26 @@ MonoBehaviour:
   forceLimit: 1000
   jointFriction: 10
   angularDamping: 10
+--- !u!114 &1752030737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1752030731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 155c733550486b8f087aa03941d57699, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RealTimeReflector
+  rosTopic: /joint_states
+  unityJoints:
+  - {fileID: 376505355}
+  - {fileID: 1121244707}
+  - {fileID: 994716560}
+  - {fileID: 468038611}
+  - {fileID: 552995724}
+  - {fileID: 1013797599}
 --- !u!1 &1780697020
 GameObject:
   m_ObjectHideFlags: 8

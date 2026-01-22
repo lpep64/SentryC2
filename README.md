@@ -84,6 +84,66 @@ source install/setup.bash
 ros2 run sentry_logic cyclic_server
 ```
 
+### Connecting to Physical Niryo Ned2 Robot
+
+**Prerequisites:**
+- Niryo Ned2 robot on network (default runs ROS1 Noetic)
+- Robot IP address (e.g., 192.168.0.244)
+- NiryoStudio **disconnected** (only one connection allowed at a time)
+
+> **Note**: Configuration currently static for Lab Bench A. Dynamic IP discovery scheduled for Week 6.
+
+**Terminal 1 (ROS-TCP Bridge for Unity):**
+```bash
+cd /workspace/ros2_ws
+source install/setup.bash
+ros2 run ros_tcp_endpoint default_server_endpoint \
+  --ros-args -p ROS_IP:=0.0.0.0 -p ROS_TCP_PORT:=10005
+```
+
+**Terminal 2 (Niryo Bridge - Bidirectional):**
+```bash
+cd /workspace/ros2_ws
+source install/setup.bash
+ros2 run sentry_logic niryo_tcp_bridge
+```
+
+This bridge:
+- **Publishes** real-time joint states to `/joint_states` topic (10 Hz)
+- **Subscribes** to `/niryo_robot_follow_joint_trajectory_controller/follow_joint_trajectory` for commands
+- Translates between ROS1 (robot) and ROS2 (workspace) bidirectionally
+
+**Verify Connection:**
+```bash
+ros2 topic list                    # Should show /joint_states
+ros2 topic echo /joint_states      # View live robot positions
+```
+
+**Test Robot Control:**
+```bash
+# In a third terminal, send a test trajectory
+cd /workspace/ros2_ws && source install/setup.bash
+ros2 run sentry_logic test_arm_trajectory
+```
+
+This will move the robot through a comprehensive 62-second test sequence:
+1. Home position
+2. Base rotation + shoulder lift
+3. Wrist pitch test (joint 5)
+4. Wrist roll (joint 4) + wrist rotation (joint 6)
+5. Sentry scan position - high alert
+6. Full base rotation with wrist movement
+7. Extended reach position
+8. Compact position
+9. Return home
+
+All 6 joints are tested including the wrist and end effector orientation.
+
+**Change Robot IP (if needed):**
+```bash
+ros2 run sentry_logic niryo_tcp_bridge --ros-args -p robot_ip:=<YOUR_IP>
+```
+
 **Unity Configuration:**
 1. **ROSConnection Settings** (GameObject with ROSConnection component):
    - ROS IP: `127.0.0.1`
